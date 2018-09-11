@@ -31,18 +31,24 @@ Lexical and Syntactic analyzer for Compie Design Course
                ::= <relacional> '>' <relacional>
                ::= <relacional> '==' <relacional>
 
-<relacional> ::= <num> | <id>
+<relacional> ::= {<num>} | <id>
 
-<aritmetica> ::=
+<aritmetica> ::= <termino> + <aritmetica> | <termino> - <aritmetica> | <termino>
+
+<termino> ::= <factor> * <termino> | <factor> / <termino> | <factor>
+
+<factor> ::= '(' <aritmetica> ')'
 
 <declaracion_si> ::= si '(' <id> ')' '{' [<expresiones>]'}'
 
 <declaracion_mientras> ::= mientras '(' id ')' '{' [<expresiones>] '}'
 
-<num> ::= { 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 }
+<num> ::= 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 
-<id> ::= { a | b | c | d | e | f | g | h | i | j | k | l | m | n | o | p | q | r | s | t | u | v | w | x | y | z }
-         [ 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 ]
+<abecedario> ::= a | b | c | d | e | f | g | h | i | j | k | l | m | n | o | p | q | r | s | t | u | v | w | x | y | z
+
+<id> ::= { <abecedario>}
+         [ <num> ]
 
 <argumentos> ::= <tipo_dato> <id> [',']
 
