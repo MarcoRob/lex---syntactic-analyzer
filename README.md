@@ -27,11 +27,11 @@ Lexical and Syntactic analyzer for Compie Design Course
 
 <asignacion> ::= <id>
 
-<relacionales> ::= <relacional> '<' <relacional>
-               ::= <relacional> '>' <relacional>
-               ::= <relacional> '==' <relacional>
+<relacionales> ::= <relacional> <operador> <relacional>
 
-<relacional> ::= {<num>} | <id>
+<operador> ::= '<'| '>' | '=='
+
+<relacional> ::= <num><relacional> | <id>
 
 <aritmetica> ::= <termino> + <aritmetica> | <termino> - <aritmetica> | <termino>
 
@@ -43,7 +43,7 @@ Lexical and Syntactic analyzer for Compie Design Course
 
 <declaracion_mientras> ::= mientras '(' id ')' '{' [<expresiones>] '}'
 
-<num> ::= 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+<num> ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 
 <abecedario> ::= a | b | c | d | e | f | g | h | i | j | k | l | m | n | o | p | q | r | s | t | u | v | w | x | y | z
 
