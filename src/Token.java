@@ -25,6 +25,7 @@ public class Token {
         this.tokenValue = tokenValue;
         this.line = line;
         this.character = character;
+        //System.out.println(this.toString());
 
     }
 

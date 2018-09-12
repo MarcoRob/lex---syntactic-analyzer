@@ -31,10 +31,14 @@ public class Lex {
     }
 
     private boolean isEspecialChar(char val) {
+
         switch (val) {
             case '\t':
+                System.out.println("especial char -t");
             case '\n':
+                System.out.println("especial char -n");
             case ' ':
+                System.out.println("especial char - -");
                 return true;
             default:
                 return false;
@@ -43,10 +47,11 @@ public class Lex {
     }
 
     private boolean isReservedWord(String word) {
-        if(this.reserved.contains(word)) {
-            this.addToken(Token.KEYWORD, word);
-        }
         return this.reserved.contains(word);
+    }
+
+    private void addReservedWord(String word) {
+        this.addToken(Token.KEYWORD, word);
     }
 
     private boolean isOperatorsChar(Character val, String line, int pos) {
@@ -86,6 +91,7 @@ public class Lex {
             if(str.equals("==")) {
             this.addToken(Token.RELATIONAL, str);
                 this.charPos++;
+                characterPos++;
                 return true;
             }
             return false;
@@ -101,11 +107,14 @@ public class Lex {
             case ')':
             case '{':
             case '}':
-                this.addToken(Token.PUNCTUATION, val.toString());
                 return true;
             default:
                 return false;
         }
+    }
+
+    private void addPunctuationChar(Character c) {
+        this.addToken(Token.PUNCTUATION, c.toString());
     }
 
     private boolean isNumberChar(String val) {
@@ -114,36 +123,48 @@ public class Lex {
         int dots = 0;
         for(int i=0; i<val.length(); i++) {
             Character character = val.charAt(i);
-            if(character.isDigit(character)) {
-                str += character;
-                continue;
-            }
-            if(this.validDot(character)) {
-                dots ++;
-                str += character;
-                if(dots > 1) {
-                    this.addToken(Token.ERROR, str);
-                    return false;
+            if(!Character.isLetter(character)) {
+                if(Character.isDigit(character)) {
+                    str += character;
+                    continue;
                 }
-                str += character;
+                if(this.validDot(character)) {
+                    dots ++;
+                    str += character;
+                    if(dots > 1) {
+                        this.addToken(Token.ERROR, str);
+                        return false;
+                    }
+                    str += character;
+                }
+            } else {
+                return false;
             }
 
+
         }
-        if(dots == 1){
-            this.addToken(Token.REAL, str);
-            return true;
-        } else {
-            this.addToken(Token.ENTERO, str);
-            return true;
+        if(!str.equals(" ")) {
+            if(dots == 1){
+                this.addToken(Token.REAL, str);
+                return true;
+            } else {
+                this.addToken(Token.ENTERO, str);
+                return true;
+            }
         }
+        return false;
     }
+
 
     private boolean validDot(char val) {
         return '.' == val;
     }
 
     private void addToken(int tokenType, String val) {
-        this.tokens.add(new Token(tokenType, val, this.linePos, this.charPos));
+        if(!val.isEmpty()) {
+            this.tokens.add(new Token(tokenType, val, this.linePos, this.charPos));
+        }
+
     }
 
     private boolean isIdentifier(String val) {
@@ -151,7 +172,9 @@ public class Lex {
         String id = "";
         for(int i=0; i<val.length(); i++) {
             Character character = val.charAt(i);
-            if(character.isLetter(i) && i==0) {
+            if(Character.isLetter(character) && i==0) {
+                id += character;
+            } else if (i > 0) {
                 id += character;
             } else {
                 this.addToken(Token.ERROR, id);
@@ -169,6 +192,8 @@ public class Lex {
         String str = "";
         for (int i = 0; i < currentLine.length(); i++) {
             char currentChar = currentLine.charAt(i);
+
+
             if(!this.isEspecialChar(currentChar)) {
                 if(this.isPunctuationChar(currentChar)) {
                     str += currentChar;
@@ -177,23 +202,31 @@ public class Lex {
                 }  else {
                     str += currentChar;
                     if(this.isOperatorsChar(currentChar, currentLine, i)) {
-                        i = this.charPos;
+                        str = "";
+                        this.charPos++;
                         continue;
                     } else {
                         if(this.isReservedWord(str)) {
+                            this.charPos++;
                             continue;
                         } else {
                             if(this.isNumberChar(str)) {
+                                this.charPos++;
                                 continue;
-                            }
-                            if(this.isIdentifier(str)) {
-                                continue;
+                            } else {
+                                if (this.isIdentifier(str)) {
+                                    this.charPos++;
+                                    continue;
+                                }
                             }
                         }
                     }
                 }
+            } else {
+                str = "";
+                this.charPos++;
             }
-
+            System.out.println(str);
         }
     }
 
@@ -212,11 +245,16 @@ public class Lex {
             while ((sCurrentLine = br.readLine()) != null) {
                 this.states(sCurrentLine);
                 this.linePos++;
-                System.out.println(sCurrentLine);
-            }
+                //System.out.println(sCurrentLine);
 
+            }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        System.out.println("---- Tokens -----");
+        for(int i=0; i<this.tokens.size(); i++) {
+            System.out.println(this.tokens.get(i));
         }
     }
 }
