@@ -24,9 +24,10 @@ if __name__ == '__main__':
     print (" //------------------------ Syntactic Analysis ------------------------//")
     symbolTable, error = Syntactic.analyze(tokens, symbols)
 
-    if(len(error) > 0):
+    if error:
       print("Error-->",error)
     else:
-      for id in symbolTable:
-        print(Token.string(symbolTable[id]))
+      print(symbolTable)
+      # for i in range(len(symbolTable)):
+        # print(Token.string(symbolTable[i]))
         

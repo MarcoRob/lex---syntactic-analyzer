@@ -27,5 +27,5 @@ def build(type, val, line, charPos) :
 
 def string(token) :
   
-  return ("Type " + str(types.get(token.get("type"))) + " Val '" + str(token.get("val")) + 
-          "' Line " + str(token.get("line")) + " Char Pos " + str(token.get("char")))
+  return ("Type: " + str(types.get(token.get("type"))) + ", Val:'" + str(token.get("val")) + 
+          "', Line:" + str(token.get("line")) + ", Char: " + str(token.get("char")))
