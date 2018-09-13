@@ -19,7 +19,7 @@ Lexical and Syntactic analyzer for Compie Design Course
             ::= 'logico'
             ::= 'real'
 
-<argumentos> ::= { <argumento> [',' <argumento>]
+<argumentos> ::= <argumento> [',' <argumento>]
 
 <argumento> ::= <tipo_dato> <id>
 
@@ -29,9 +29,13 @@ Lexical and Syntactic analyzer for Compie Design Course
 
 <regresa> ::= 'regresa' <id> ';'
 
-<operaciones> ::= <sentencia_si>
-              ::= <sentencia_mientras>
+<operaciones> ::= <sentencias>
               ::= <expresiones>
+
+<sentencias> ::= <sentencia> [<sentencias>]
+
+<sentencia> ::= <sentencia_si>
+            ::= <sentencia_mientras>
 
 <sentencia_si> ::= si '(' <id> ')' '{' [<expresiones>] '}'
 
