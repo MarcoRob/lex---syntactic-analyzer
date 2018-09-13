@@ -5,54 +5,84 @@ Lexical and Syntactic analyzer for Compie Design Course
 ## Grammar (Backus Naur Form)
 
 ```
-<fuente> ::= [<bloque_funcion>] <principal>
+<fuente> ::= [<bloque_funciones>] <principal>
 
-<bloque_funcion> ::= {<funcion>}
+<bloque_funciones> ::= {<funcion>}
 
 <principal> ::= principal '(' ')' [<declaraciones>]
                 [<operaciones>] '}'
 
 <funcion> ::= <tipo_dato> <id> '(' [<argumentos>] ')'
-                '{' [<declaraciones>] [<expresiones>]
-                <regresa> '}'
+                '{' [<declaraciones>] [<operaciones>] <regresa> '}'
 
-// <operaciones> ::= <expresiones>
+<tipo_dato> ::= 'entero'
+            ::= 'logico'
+            ::= 'real'
 
-<expresiones> ::= <id> '=' <expresion> ';'
-              ::= <declaracion_si> | <declaracion_mientras>
-<expresion> ::= <aritmetica> | <logica> | <relacionales> | <id> | !<id>
+<argumentos> ::= <argumento> [',' <argumento>]
 
-<logica> ::= <id> '&' <id> ';'
-         ::= <id> '|' <id> ';'
+<argumento> ::= <tipo_dato> <id>
 
-<asignacion> ::= <id>
+<declaraciones> ::= { declaracion }
 
-<relacionales> ::= <relacional> <operador> <relacional>
+<declaracion> ::= <tipo_dato> <id> ';'
 
-<operador> ::= '<'| '>' | '=='
+<regresa> ::= 'regresa' <id> ';'
 
-<relacional> ::= <num><relacional> | <id>
+<operaciones> ::= <sentencias>
+              ::= <expresiones>
 
-<aritmetica> ::= <termino> + <aritmetica> | <termino> - <aritmetica> | <termino>
+<sentencias> ::= <sentencia> [<sentencias>]
 
-<termino> ::= <factor> * <termino> | <factor> / <termino> | <factor>
+<sentencia> ::= <sentencia_si>
+            ::= <sentencia_mientras>
 
-<factor> ::= '(' <aritmetica> ')'
+<sentencia_si> ::= si '(' <id> ')' '{' [<expresiones>] '}'
 
-<declaracion_si> ::= si '(' <id> ')' '{' [<expresiones>]'}'
+<sentencia_mientras> ::= mientras '(' id ')' '{' [<expresiones>] '}'
 
-<declaracion_mientras> ::= mientras '(' id ')' '{' [<expresiones>] '}'
+<expresiones> ::= <asignacion>
+              ::= <llamada_funcion> ';'
 
-<num> ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+<asgnacion> ::= <id> '=' <expresion> ';'
 
-<abecedario> ::= a | b | c | d | e | f | g | h | i | j | k | l | m | n | o | p | q | r | s | t | u | v | w | x | y | z
+<expresion> ::= <aritmetica> | <logica> | <relacional> | <id> | '!'<id>
 
-<id> ::= { <abecedario>}
+<llamada_funcion> ::= <id> '(' [<argumentos>]')'
+
+<aritmetica> ::= '(' <aritmetica> ')'
+             ::= <valor_aritmetico>
+             ::= <aritmetica> [<operador_aritmetico> <aritmetica>]
+
+<valor_aritmetico> ::= <id> | <entero> | <real> | <llamada_funcion>
+
+<entero> ::= // [0..9]
+
+<real> ::= // {[0..9]} '.' {[0..9]}
+
+<operador_aritmetico> ::= '+' | '-' | '*' | '/' | '^'
+
+<logica> ::= '(' <logica> ')'
+         ::= <valor_logico>
+         ::= <logica> [<operador_logico> <logica>]
+
+<valor_logico> ::= '&' | '|'
+
+<relacional> ::= <valor_aritmetico> <operador_relacional> <valor_aritmetico>
+
+<operador_relacional> ::= '<'| '>' | '=='
+
+<id> ::= { <abc> }
          [ <num> ]
+         [ <ABC>]
+```
 
-<argumentos> ::= <tipo_dato> <id> [',']
+## Build and Run
 
-<regresa> ::= <id> ';'
+In order to run the project, you will need to have install `python3` and the code file `txt` in the same root/folder
 
-<declaraciones> ::= <tipo_dato> <id> ';'
+To run just set the following command:
+
+```
+python3 main.py
 ```
