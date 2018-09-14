@@ -20,7 +20,6 @@ def validateToken(token_key, token_val, line, charPos, ) :
 # Analyze the tokens and return Symbol Table and Errors (if their exit)
 def analyze(tokens, symbols) :
   tokensTable = tokens
-  symbolsTable = {}
   initialPos = 0;
   initialLine = 0
   
@@ -30,8 +29,7 @@ def analyze(tokens, symbols) :
 
   funcionesPos, errFunciones = validateFunciones(tokens)
   if errFunciones:
-    return funcionesPos, errFunciones
-
+    return symbolsTable, errFunciones
 
   return symbolsTable, None
       
@@ -41,27 +39,31 @@ def validateFunciones(tokens) :
   tokenFunc = []
   for i in range(len(tokens)):
     token = tokens[i]
+    #print("__val__", token['val'])
     if(token['val'] in data_type) :
       i += 1
       token = tokens[i]
       if(token['type'] is Token.IDENTIFIER) :
+        symbolsTable[tokens[i]['val']] = {"data-type": "ID", "type":Token.IDENTIFIER, "val":tokens[i]['val'], "line":tokens[i]['line'], 'char':tokens[i]['char']}
         i += 1
         token = tokens[i]
+        #print("__val2__", token['val'] )
         if(token['val'] == '(') :
           i += 1
           token = tokens[i]
-          ##print("type__", token['type'])
+          #print("type__", token['val'])
           if(token['type'] is Token.KEYWORD) :
             i += 1
             token = tokens[i]
+            #print("_val_3_", token['val'])
             if(token['type'] is Token.IDENTIFIER) :
-              symbolsTable[tokens[i]['val']] = {"type":Token.IDENTIFIER, "val":tokens[i]['val'], "line":tokens[i]['line'], 'char':tokens[i]['char']}
+              symbolsTable[tokens[i]['val']] = {"data-type": "ID", "type":Token.IDENTIFIER, "val":tokens[i]['val'], "line":tokens[i]['line'], 'char':tokens[i]['char']}
               i += 1
               token = tokens[i]
               hasMoreArguments = True
               while hasMoreArguments :
                 token = tokens[i]
-                #print("___val___", token['val'])
+                ##print("___val___", token['val'])
                 if token['val'] == ',':
                   i +=1
                   token = tokens[i]
@@ -72,7 +74,7 @@ def validateFunciones(tokens) :
                     #print("___val3___", token['val'])
                     if token['type'] is Token.IDENTIFIER :
                       #print("___val4___", token['val'])
-                      symbolsTable[tokens[i]['val']] = {"type":Token.IDENTIFIER, "val":tokens[i]['val'], "line":tokens[i]['line'], 'char':tokens[i]['char']}
+                      symbolsTable[tokens[i]['val']] = {"data-type": "ID","type":Token.IDENTIFIER, "val":tokens[i]['val'], "line":tokens[i]['line'], 'char':tokens[i]['char']}
                       i += 1
                       continue
                     else :
@@ -88,11 +90,15 @@ def validateFunciones(tokens) :
             if(token['val'] == ')'):
               #print("algo")
               i += 1
+              token = tokens[i]
+              if token['val'] == '{':
+                break
               continue
             else:
               return [], error(") faltante", token, i)
           else :
             if(token['val'] == ')'):
+              i += 1
               continue
             return [], error(str(data_type) + " esperado", token, i)
         else :

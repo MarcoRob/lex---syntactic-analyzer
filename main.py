@@ -27,7 +27,7 @@ if __name__ == '__main__':
     if error:
       print("Error-->",error)
     else:
-      print(symbolTable)
-      # for i in range(len(symbolTable)):
-        # print(Token.string(symbolTable[i]))
+      #print(symbolTable)
+      for symbol in symbolTable:
+        print(str(symbol) +  "--" + str(symbolTable[symbol]))
         

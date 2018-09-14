@@ -10,7 +10,7 @@ entero func1(logico l1, real r1) {
 	regresa a;
 }
 
-real func2(){
+real func2(logico l1, real r1){
 	entero e1;
 	real e1;
 	logico e2;
@@ -38,5 +38,14 @@ principal() {
 	logico e2;
 	entero e2;
 	
-	resultado = fun()1 + fun2();
+	resultado = fun1() + fun2();
+}
+
+principal() {
+	entero e1;
+	real e1;
+	logico e2;
+	entero e2;
+	
+	resultado = fun1() + fun2();
 }
